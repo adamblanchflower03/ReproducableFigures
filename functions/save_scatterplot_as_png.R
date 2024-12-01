@@ -5,6 +5,5 @@ save_as_png <- function(data, filename, size, res, scaling){
           res = res,
           scaling = scaling)
   print(scatterplot)
-  dev.off()
+  dev.off
 }
-

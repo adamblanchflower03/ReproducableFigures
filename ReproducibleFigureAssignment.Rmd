@@ -17,11 +17,8 @@ library(svglite)
 #Loading cleaning function file
 source(here("functions", "cleaning.R"))
 
-#Loading save as .png function 
-source(here("functions", "save_as_png.R"))
-
-#Loading save as .svg function
-source(here("functions", "save_as_svg.R"))
+#Loading functions to save figures as .png and .svg files
+source(here("functions", "save_as_png_and_svg_functions.R"))
 
 #Loading scatterplot for three species function
 source(here("functions", "scatterplot_for_three_species.R"))
@@ -32,26 +29,8 @@ source(here("functions", "scatterplot_for_one_species.R"))
 #loading histogram function
 source(here("functions", "overlapping_histogram.R"))
 
-#loading save histogram as png function 
-source(here("functions", "save_histogram_as_png.R"))
-
-#loading save histogram as svg function 
-source(here("functions", "save_histogram_as_svg.R"))
-
-#loading save diagnostic as png function
-source(here("functions", "save_diagnostic_plot_as_png.R"))
-
-#loading save diagnostic as svg function
-source(here("functions", "save_diagnostic_plot_as_svg.R"))
-
 #loading linear model figure function
 source(here("functions", "linear_model_figure.R"))
-
-#loading save results figure as png function
-source(here("functions", "save_results_figure_as_png.R"))
-
-#loading save results figure as png function 
-source(here("functions", "save_results_figure_as_svg.R"))
 ```
 
 QUESTION 01: Data Visualisation for Science Communication
@@ -120,6 +99,7 @@ save_as_svg(clvscd_scatterplot,
             size = 20, scaling =2)
 ```
 
+
 QUESTION 02: Data Pipeline
 
 Load the data
@@ -132,6 +112,7 @@ penguins_raw
 #Preserving raw datast
 write_csv(penguins_raw, here("data", "penguins_raw.csv"))
 ```
+
 
 Clean and subset the data
 
@@ -150,6 +131,7 @@ head(clean_gentoo_body_mass_sex)
 write_csv(clean_gentoo_body_mass_sex, here("data", "clean_gentoo_body_mass.csv"))
 ```
 
+
 Create an Exploratory Figure
 
 ```{r}
@@ -161,16 +143,17 @@ histogram
 
 
 #Saving histogram as .png
-save_histogram_as_png(clvscd_scatterplot,
+save_histogram_as_png(histogram,
             here("figures", "histogram.png"),
             size = 20, res = 300, scaling = 2)
 
 #Saving histogram as .svg
-save_histogram_as_svg(clvscd_scatterplot,
+save_histogram_as_svg(histogram,
             here("figures", "histogram.svg"),
             size = 20, scaling =2)
 
 ```
+
 
 Run a statistical test
 
