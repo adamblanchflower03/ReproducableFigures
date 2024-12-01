@@ -3,7 +3,9 @@ title: "ReproducibleFiguresAnalysis"
 output: html_document
 date: "2024-11-26"
 ---
-Loading libraries 
+
+Loading libraries
+
 ```{r}
 library(tidyverse)
 library(palmerpenguins)
@@ -35,12 +37,29 @@ source(here("functions", "save_histogram_as_png.R"))
 
 #loading save histogram as svg function 
 source(here("functions", "save_histogram_as_svg.R"))
+
+#loading save diagnostic as png function
+source(here("functions", "save_diagnostic_plot_as_png.R"))
+
+#loading save diagnostic as svg function
+source(here("functions", "save_diagnostic_plot_as_svg.R"))
+
+#loading linear model figure function
+source(here("functions", "linear_model_figure.R"))
+
+#loading save results figure as png function
+source(here("functions", "save_results_figure_as_png.R"))
+
+#loading save results figure as png function 
+source(here("functions", "save_results_figure_as_svg.R"))
 ```
 
-QUESTION 01: Data Visualisation for Science Communication 
+QUESTION 01: Data Visualisation for Science Communication
 
 Loading dataset
+
 ```{r}
+#Done
 #Loading raw dataset
 penguins_raw
 
@@ -48,8 +67,11 @@ penguins_raw
 write_csv(penguins_raw, here("data", "penguins_raw.csv"))
 ```
 
+
 Cleaning dataset
+
 ```{r}
+#Done
 #Cleaning function to clean the data 
 penguins_clean <- penguins_raw %>%
   clean_column_names() %>%
@@ -63,8 +85,11 @@ penguins_clean
 write_csv(penguins_clean, here("data", "penguins_clean.csv"))
 ```
 
+
 Making scatterplot (Culmen Length vs Culmen Depth)
+
 ```{r}
+#Done
 #Subset columns and removing NA values
 species_culmen_length_and_depth <- penguins_clean %>% select(species, culmen_length_mm, culmen_depth_mm) %>%
   drop_na()
@@ -95,11 +120,12 @@ save_as_svg(clvscd_scatterplot,
             size = 20, scaling =2)
 ```
 
-
 QUESTION 02: Data Pipeline
 
 Load the data
+
 ```{r}
+#Done
 #Loading raw dataset
 penguins_raw
 
@@ -107,9 +133,10 @@ penguins_raw
 write_csv(penguins_raw, here("data", "penguins_raw.csv"))
 ```
 
-
 Clean and subset the data
+
 ```{r}
+#Done
 #Clean and subset the data
 clean_gentoo_body_mass_sex <- penguins_clean %>%
   filter(species == "Gentoo") %>%  #filter by Gentoo species 
@@ -123,10 +150,10 @@ head(clean_gentoo_body_mass_sex)
 write_csv(clean_gentoo_body_mass_sex, here("data", "clean_gentoo_body_mass.csv"))
 ```
 
-
-Create an Exploratory Figure 
+Create an Exploratory Figure
 
 ```{r}
+#Done
 #Histogram function
 histogram <- overlapping_histogram_comparing_sexes(clean_gentoo_body_mass_sex, body_mass_g, sex, "Body Mass(g)", "Count")
 
@@ -145,14 +172,16 @@ save_histogram_as_svg(clvscd_scatterplot,
 
 ```
 
-
 Run a statistical test
+
 ```{r}
+#Done
 #Defining linear model
 linear_model <- lm(body_mass_g ~ sex, data = clean_gentoo_body_mass_sex)
 ```
 
 ```{r}
+#Done
 #Diagnostic plots 
 #Displaying diagnostic plots in a multi-panel grid
 par(mfrow = c(2, 2), 
@@ -160,23 +189,37 @@ par(mfrow = c(2, 2),
 
 
 #Diagnostic plots
-diagnostic_plots <- plot(linear_model)
-diagnostic_plots
+diagnostic_plot <- plot(linear_model)
+diagnostic_plot
+
+
+#Saving diagnostic plots .png
+save_diagnostic_plot_as_png(diagnostic_plots,
+            here
+            ("figures", "diagnostic_plot_report.png"),
+            size = 20, res = 300, scaling = 2)
+
+
+#Saving diagnostic plots as .svg
+save_diagnostic_plot_as_svg(diagnostic_plots,
+                              here("figures", "diagnostic_plot_report.svg"),
+                              size = 20, res = 300, scaling = 2)
 ```
 
 ```{r}
-#Linear model analysis
+#Done
 summary(linear_model)
 ```
 
 ```{r}
+#Done
 #Linear model analysis summary table
 linear_model_summary <- broom::tidy(linear_model)  #converting model into a clean structure and extracting key details 
 
 #rounded summary table
 linear_model_summary_table <- linear_model_summary %>%
   select(term, estimate, std.error, statistic, p.value) %>%
-  mutate(    #rounding etimate, SE and statistic to 3 decimal places 
+  mutate(    #rounding estimate, SE and statistic to 3 decimal places 
     estimate = round(estimate, 3),
     std.error = round(std.error, 3),
     statistic = round(statistic, 3),
@@ -187,18 +230,26 @@ print(linear_model_summary_table)
 
 
 ```{r}
+#Done
 #Results figure
-linear_model_figure <- ggplot(clean_gentoo_body_mass_sex, aes(x = sex, y = body_mass_g)) +
-  geom_point(color="black") +
-  geom_smooth(method = "lm", aes(group = 1), #grouping the variable "Year" so regression line calculated for all points collectively 
-              se = FALSE, color = "firebrick", linetype = "solid") +
-  xlab("Sex") +
-  ylab("Body Mass (g)")
+linear_model_results_figure <-linear_model_figure(clean_gentoo_body_mass_sex, sex, body_mass_g, "Sex", "Body Mass (g)")
 
-linear_model_figure
+linear_model_results_figure
+
+#Saving results figure as .png
+save_results_figure_as_png(linear_model_results_figure,
+            here
+            ("figures", "diagnostic_plot_report.png"),
+            size = 20, res = 300, scaling = 2)
+
+
+#Saving results figure as .svg
+save_results_figure_as_svg(linear_model_results_figure,
+                              here("figures", "diagnostic_plot_report.svg"),
+                              size = 20, res = 300, scaling = 2)
 ```
 
 
 
 
-QUESTION 3: Open Science 
+QUESTION 3: Open Science
