@@ -198,7 +198,6 @@ linear_model_figure <- ggplot(clean_gentoo_body_mass_sex, aes(x = sex, y = body_
 linear_model_figure
 ```
 
-This is test text remove
 
 
 
