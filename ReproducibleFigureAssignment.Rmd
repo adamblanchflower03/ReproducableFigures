@@ -1,0 +1,205 @@
+---
+title: "ReproducibleFiguresAnalysis"
+output: html_document
+date: "2024-11-26"
+---
+Loading libraries 
+```{r}
+library(tidyverse)
+library(palmerpenguins)
+library(janitor)
+library(here)
+library(ragg)
+library(svglite)
+
+#Loading cleaning function file
+source(here("functions", "cleaning.R"))
+
+#Loading save as .png function 
+source(here("functions", "save_as_png.R"))
+
+#Loading save as .svg function
+source(here("functions", "save_as_svg.R"))
+
+#Loading scatterplot for three species function
+source(here("functions", "scatterplot_for_three_species.R"))
+
+#Loading scatterplot for one species function
+source(here("functions", "scatterplot_for_one_species.R"))
+
+#loading histogram function
+source(here("functions", "overlapping_histogram.R"))
+
+#loading save histogram as png function 
+source(here("functions", "save_histogram_as_png.R"))
+
+#loading save histogram as svg function 
+source(here("functions", "save_histogram_as_svg.R"))
+```
+
+QUESTION 01: Data Visualisation for Science Communication 
+
+Loading dataset
+```{r}
+#Loading raw dataset
+penguins_raw
+
+#Preserving raw datast
+write_csv(penguins_raw, here("data", "penguins_raw.csv"))
+```
+
+Cleaning dataset
+```{r}
+#Cleaning function to clean the data 
+penguins_clean <- penguins_raw %>%
+  clean_column_names() %>%
+  remove_columns(c("comments", "delta")) %>%
+  shorten_species() %>%
+  remove_empty_columns_rows()
+
+penguins_clean
+
+#Saving cleaned dataset
+write_csv(penguins_clean, here("data", "penguins_clean.csv"))
+```
+
+Making scatterplot (Culmen Length vs Culmen Depth)
+```{r}
+#Subset columns and removing NA values
+species_culmen_length_and_depth <- penguins_clean %>% select(species, culmen_length_mm, culmen_depth_mm) %>%
+  drop_na()
+
+species_culmen_length_and_depth
+```
+
+```{r}
+#Done
+#scatter plot for three species function 
+scatterplot <- three_species_scatterplot(species_culmen_length_and_depth,
+                          culmen_length_mm, culmen_depth_mm, species,
+                          "Culmen Length (mm)", "Culmen Depth (mm)")
+
+scatterplot
+```
+
+```{r}
+#Done
+#Saving scatterplot as .png 
+save_as_png(clvscd_scatterplot,
+            here("figures", "clvscd_scatterplot_report.png"),
+            size = 20, res = 300, scaling = 2)
+
+#Saving scatterplot as .svg
+save_as_svg(clvscd_scatterplot,
+            here("figures", "clvscd_scatterplot_report.svg"),
+            size = 20, scaling =2)
+```
+
+
+QUESTION 02: Data Pipeline
+
+Load the data
+```{r}
+#Loading raw dataset
+penguins_raw
+
+#Preserving raw datast
+write_csv(penguins_raw, here("data", "penguins_raw.csv"))
+```
+
+
+Clean and subset the data
+```{r}
+#Clean and subset the data
+clean_gentoo_body_mass_sex <- penguins_clean %>%
+  filter(species == "Gentoo") %>%  #filter by Gentoo species 
+  select(species, body_mass_g, sex) %>% #subset species, body mass and sex 
+  remove_NA() 
+
+#visualise the data 
+head(clean_gentoo_body_mass_sex)
+
+#save cleaned data set
+write_csv(clean_gentoo_body_mass_sex, here("data", "clean_gentoo_body_mass.csv"))
+```
+
+
+Create an Exploratory Figure 
+
+```{r}
+#Histogram function
+histogram <- overlapping_histogram_comparing_sexes(clean_gentoo_body_mass_sex, body_mass_g, sex, "Body Mass(g)", "Count")
+
+histogram
+
+
+#Saving histogram as .png
+save_histogram_as_png(clvscd_scatterplot,
+            here("figures", "histogram.png"),
+            size = 20, res = 300, scaling = 2)
+
+#Saving histogram as .svg
+save_histogram_as_svg(clvscd_scatterplot,
+            here("figures", "histogram.svg"),
+            size = 20, scaling =2)
+
+```
+
+
+Run a statistical test
+```{r}
+#Defining linear model
+linear_model <- lm(body_mass_g ~ sex, data = clean_gentoo_body_mass_sex)
+```
+
+```{r}
+#Diagnostic plots 
+#Displaying diagnostic plots in a multi-panel grid
+par(mfrow = c(2, 2), 
+    mar = c(4, 4, 2, 2)) #changing size of margins 
+
+
+#Diagnostic plots
+diagnostic_plots <- plot(linear_model)
+diagnostic_plots
+```
+
+```{r}
+#Linear model analysis
+summary(linear_model)
+```
+
+```{r}
+#Linear model analysis summary table
+linear_model_summary <- broom::tidy(linear_model)  #converting model into a clean structure and extracting key details 
+
+#rounded summary table
+linear_model_summary_table <- linear_model_summary %>%
+  select(term, estimate, std.error, statistic, p.value) %>%
+  mutate(    #rounding etimate, SE and statistic to 3 decimal places 
+    estimate = round(estimate, 3),
+    std.error = round(std.error, 3),
+    statistic = round(statistic, 3),
+    p.value = format(p.value, scientific = TRUE, digits = 4)) #converting p-values to 4 significant figures 
+
+print(linear_model_summary_table)
+```
+
+
+```{r}
+#Results figure
+linear_model_figure <- ggplot(clean_gentoo_body_mass_sex, aes(x = sex, y = body_mass_g)) +
+  geom_point(color="black") +
+  geom_smooth(method = "lm", aes(group = 1), #grouping the variable "Year" so regression line calculated for all points collectively 
+              se = FALSE, color = "firebrick", linetype = "solid") +
+  xlab("Sex") +
+  ylab("Body Mass (g)")
+
+linear_model_figure
+```
+
+
+
+
+
+QUESTION 3: Open Science 
