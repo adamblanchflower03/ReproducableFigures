@@ -18,7 +18,10 @@ library(svglite)
 source(here("functions", "cleaning.R"))
 
 #Loading functions to save figures as .png and .svg files
-source(here("functions", "save_as_png_and_svg_functions.R"))
+source(here("functions", "png_and_svg_functions.R"))
+
+#Loading functions to produce exploratory figures 
+source(here("functions", "exploratory_figure_functions.R"))
 
 #Loading scatterplot for three species function
 source(here("functions", "scatterplot_for_three_species.R"))
@@ -76,6 +79,7 @@ species_culmen_length_and_depth <- penguins_clean %>% select(species, culmen_len
 species_culmen_length_and_depth
 ```
 
+
 ```{r}
 #Done
 #scatter plot for three species function 
@@ -84,19 +88,18 @@ scatterplot <- three_species_scatterplot(species_culmen_length_and_depth,
                           "Culmen Length (mm)", "Culmen Depth (mm)")
 
 scatterplot
-```
 
-```{r}
-#Done
 #Saving scatterplot as .png 
-save_as_png(clvscd_scatterplot,
-            here("figures", "clvscd_scatterplot_report.png"),
+save_as_png(clvscd_scatterplot, 
+            here("figures", "clvscd_scatterplot_report.png"), 
+            scatterplot,
             size = 20, res = 300, scaling = 2)
 
 #Saving scatterplot as .svg
 save_as_svg(clvscd_scatterplot,
             here("figures", "clvscd_scatterplot_report.svg"),
-            size = 20, scaling =2)
+            scatterplot,
+            size = 20, scaling = 2)
 ```
 
 
@@ -199,14 +202,14 @@ summary(linear_model)
 #Linear model analysis summary table
 linear_model_summary <- broom::tidy(linear_model)  #converting model into a clean structure and extracting key details 
 
-#rounded summary table
+#Summary table - estimate, SE, and statistic rounded to three decimal points and p-values to 4 significant figues  
 linear_model_summary_table <- linear_model_summary %>%
   select(term, estimate, std.error, statistic, p.value) %>%
   mutate(    #rounding estimate, SE and statistic to 3 decimal places 
     estimate = round(estimate, 3),
     std.error = round(std.error, 3),
     statistic = round(statistic, 3),
-    p.value = format(p.value, scientific = TRUE, digits = 4)) #converting p-values to 4 significant figures 
+    p.value = format(p.value, scientific = TRUE, digits = 4)) 
 
 print(linear_model_summary_table)
 ```

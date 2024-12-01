@@ -10,7 +10,7 @@
 
 #save diagnostic plot as .png
 
-save_diagnostic_plot_as_png <- function(data, filename, size, res, scaling){
+save_ass_png <- function(data, filename, size, res, scaling){
   agg_png(filename, width = size,
           height = size,
           units = "cm",
@@ -22,7 +22,7 @@ save_diagnostic_plot_as_png <- function(data, filename, size, res, scaling){
 
 #save diagnostic plot as .svg
 
-save_diagnostic_plot_as_svg <- function(data, filename, size, res, scaling){
+save_ass_svg <- function(data, filename, size, res, scaling){
   size_inches = size/2.54
   svglite(filename, width = size_inches,
           height = size_inches,
@@ -77,25 +77,6 @@ save_results_figure_as_svg <- function(data, filename, size, res, scaling){
   dev.off()
 }
 
-#save scatterplot as .png
 
-save_as_png <- function(data, filename, size, res, scaling){
-  agg_png(filename, width = size,
-          height = size,
-          units = "cm",
-          res = res,
-          scaling = scaling)
-  print(scatterplot)
-  dev.off
-}
 
-#save scatterplot as .svg
 
-save_as_svg <- function(data, filename, size, res, scaling){
-  size_inches = size/2.54
-  svglite(filename, width = size_inches,
-          height = size_inches,
-          scaling = scaling)
-  print(scatterplot)
-  dev.off()
-}
