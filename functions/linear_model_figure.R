@@ -8,6 +8,7 @@
 ## Date Created: 02-12-2024
 ##
 
+
 linear_model_figure <- function(data, x_column, y_column, x_label, y_label) {
   ggplot(data = data, 
          aes(x = {{ x_column }},
@@ -17,5 +18,3 @@ linear_model_figure <- function(data, x_column, y_column, x_label, y_label) {
     xlab(x_label) +
     ylab(y_label)
 }
-
-  
