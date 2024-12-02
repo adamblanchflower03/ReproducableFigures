@@ -1,8 +1,15 @@
 ---
-title: "reproducible_figures_analysis"
+title: "QUESTION 02: Data Pipeline"
 output: html_document
 date: "2024-11-26"
 ---
+
+INTRODUCTION
+
+"Sexual dimorphism" means that the two sexes of a species differ in external appearances or other features (Ralls & Mesnich., 2009). This includes differences in size, where one of the sexes are a lot larger than the other. Here, I investigate whether this sexual size dimorphism is apparent in the Gentoo penguin (Pygoscelis papua) using body mass data acquired from the "palmerpenguins" data set. If there was no size difference, we would expect the coefficient from a linear model analysis to be zero.
+
+
+STATISTICAL METHODS
 
 Loading libraries
 ```{r}
@@ -12,6 +19,7 @@ library(janitor)
 library(here)
 library(ragg)
 library(svglite)
+library(broom)
 ```
 
 
@@ -34,76 +42,6 @@ source(here("functions", "diagnostic_plot_function.R"))
 ```
 
 
-QUESTION 01: Data Visualisation for Science Communication
-Loading dataset
-```{r}
-#Loading and visualising raw dataset
-penguins_raw
-
-#Saving raw datast
-write_csv(penguins_raw, here("data", "penguins_raw.csv"))
-```
-
-
-Cleaning dataset
-```{r}
-#Cleaning function to clean the data 
-penguins_clean <- penguins_raw %>%
-  clean_column_names() %>%
-  remove_columns(c("comments", "delta")) %>%
-  shorten_species() %>%
-  remove_empty_columns_rows()
-
-#Visualising clean data set 
-penguins_clean
-
-#Saving cleaned dataset
-write_csv(penguins_clean, here("data", "penguins_clean.csv"))
-```
-
-
-Making scatterplot (Culmen Length vs Culmen Depth)
-```{r}
-#Subset columns and removing NA values
-species_culmen_length_and_depth <- penguins_clean %>% select(species, culmen_length_mm, culmen_depth_mm) %>%
-  drop_na()
-
-#Visualising modified data set 
-species_culmen_length_and_depth
-
-#Saving modified data 
-write_csv(penguins_clean, here("data", "species_culmen_length_and_depth.csv"))
-```
-
-
-```{r}
-#scatter plot for three species function 
-scatterplot <- three_species_scatterplot(species_culmen_length_and_depth,
-                          culmen_length_mm, culmen_depth_mm, species,
-                          "Culmen Length (mm)", "Culmen Depth (mm)")
-
-#Visualising scatter plot
-scatterplot
-
-#Saving scatterplot as .png 
-save_as_png(species_culmen_length_and_depth, 
-            here("figures", "clvscd_scatterplot_report.png"), 
-            scatterplot,
-            size = 20, res = 300, scaling = 2)
-
-#Saving scatterplot as .svg
-save_as_svg(species_culmen_length_and_depth,
-            here("figures", "clvscd_scatterplot_report.svg"),
-            scatterplot,
-            size = 20, scaling = 2)
-```
-
-
-QUESTION 02: Data Pipeline
-INTRODUCTION
-In some species sexual selection has led to sexual dimorphism  
-
-STATISTICAL METHODS
 Load the data
 ```{r}
 #Loading raw dataset
@@ -128,6 +66,7 @@ head(clean_gentoo_body_mass_sex)
 #save cleaned data set
 write_csv(clean_gentoo_body_mass_sex, here("data", "clean_gentoo_body_mass.csv"))
 ```
+
 
 Creating an Exploratory Figure - Histogram
 ```{r}
@@ -159,6 +98,7 @@ Running a statistical test
 linear_model <- lm(body_mass_g ~ sex, data = clean_gentoo_body_mass_sex)
 ```
 
+
 Checking for assumptions of linear model analysis 
 ```{r}
 #Diagnostic plots 
@@ -189,11 +129,12 @@ save_diagnostic_plot_as_svg(
 )
 ```
 
-RESULTS AND DISCUSSION 
+
+RESULTS
 ```{r}
 #Linear model analysis summary table
 #Firstly, converting model into a clean structure and extracting key details 
-linear_model_summary <- broom::tidy(linear_model)   
+linear_model_summary <- tidy(linear_model)   
 
 #Summary table - estimate, SE, and statistic rounded to three decimal points and p-values to 4 significant figures  
 linear_model_summary_table <- linear_model_summary %>%
@@ -229,6 +170,10 @@ save_as_svg(clean_gentoo_body_mass_sex,
             size = 20, scaling = 2)
 ```
 
+DISCUSSION
+
+
+CONCLUSION
 
 
 
