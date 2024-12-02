@@ -47,7 +47,7 @@ three_species_scatterplot <- function(data,
            y = {{ y_column}},
            shape = {{species}})) + 
     geom_point(size = 1.5) +
-    scale_shape_manual(values = c(16, 17, 21)) +
+    scale_shape_manual(values = c(16, 17, 18)) +
     labs(
       x = x_label,
       y = y_label) + 

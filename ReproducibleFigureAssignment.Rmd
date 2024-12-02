@@ -1,5 +1,5 @@
 ---
-title: "ReproducibleFiguresAnalysis"
+title: "reproducible_figures_analysis"
 output: html_document
 date: "2024-11-26"
 ---
@@ -100,6 +100,10 @@ save_as_svg(species_culmen_length_and_depth,
 
 
 QUESTION 02: Data Pipeline
+INTRODUCTION
+In some species sexual selection has led to sexual dimorphism  
+
+STATISTICAL METHODS
 Load the data
 ```{r}
 #Loading raw dataset
@@ -125,10 +129,8 @@ head(clean_gentoo_body_mass_sex)
 write_csv(clean_gentoo_body_mass_sex, here("data", "clean_gentoo_body_mass.csv"))
 ```
 
-
-Create an Exploratory Figure
+Creating an Exploratory Figure - Histogram
 ```{r}
-#Done
 #Histogram function
 histogram <- overlapping_histogram_comparing_sexes(clean_gentoo_body_mass_sex, body_mass_g, sex, "Body Mass(g)", "Count")
 
@@ -151,13 +153,13 @@ save_as_svg(clean_gentoo_body_mass_sex,
 ```
 
 
-Run a statistical test
+Running a statistical test
 ```{r}
 #Defining linear model
 linear_model <- lm(body_mass_g ~ sex, data = clean_gentoo_body_mass_sex)
 ```
 
-
+Checking for assumptions of linear model analysis 
 ```{r}
 #Diagnostic plots 
 #Displaying diagnostic plots in a multi-panel grid and adjusting margin size 
@@ -187,7 +189,7 @@ save_diagnostic_plot_as_svg(
 )
 ```
 
-
+RESULTS AND DISCUSSION 
 ```{r}
 #Linear model analysis summary table
 #Firstly, converting model into a clean structure and extracting key details 
