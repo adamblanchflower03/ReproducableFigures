@@ -5,7 +5,6 @@ date: "2024-11-26"
 ---
 
 Loading libraries
-
 ```{r}
 library(tidyverse)
 library(palmerpenguins)
@@ -13,24 +12,30 @@ library(janitor)
 library(here)
 library(ragg)
 library(svglite)
-
-#Loading cleaning function file
-source(here("functions", "cleaning.R"))
-
-#Loading functions to save figures as .png and .svg files
-source(here("functions", "png_and_svg_functions.R"))
-
-#Loading functions to produce exploratory figures 
-source(here("functions", "exploratory_figure_functions.R"))
-
-#loading linear model figure function
-source(here("functions", "linear_model_figure.R"))
 ```
 
+
+Loading functions
+```{r}
+#Cleaning function file
+source(here("functions", "cleaning.R"))
+
+#Function file to save figures as .png and .svg files
+source(here("functions", "png_and_svg_functions.R"))
+
+#Functions to produce exploratory figures 
+source(here("functions", "exploratory_figure_functions.R"))
+
+#Linear model figure function
+source(here("functions", "linear_model_figure.R"))
+
+#Diagnostic plot function
+source(here("functions", "diagnostic_plot_function.R"))
+```
+
+
 QUESTION 01: Data Visualisation for Science Communication
-
 Loading dataset
-
 ```{r}
 #Done
 #Loading raw dataset
@@ -42,7 +47,6 @@ write_csv(penguins_raw, here("data", "penguins_raw.csv"))
 
 
 Cleaning dataset
-
 ```{r}
 #Done
 #Cleaning function to clean the data 
@@ -60,7 +64,6 @@ write_csv(penguins_clean, here("data", "penguins_clean.csv"))
 
 
 Making scatterplot (Culmen Length vs Culmen Depth)
-
 ```{r}
 #Done
 #Subset columns and removing NA values
@@ -95,9 +98,7 @@ save_as_svg(species_culmen_length_and_depth,
 
 
 QUESTION 02: Data Pipeline
-
 Load the data
-
 ```{r}
 #Done
 #Loading raw dataset
@@ -109,7 +110,6 @@ write_csv(penguins_raw, here("data", "penguins_raw.csv"))
 
 
 Clean and subset the data
-
 ```{r}
 #Done
 #Clean and subset the data
@@ -127,76 +127,67 @@ write_csv(clean_gentoo_body_mass_sex, here("data", "clean_gentoo_body_mass.csv")
 
 
 Create an Exploratory Figure
-
 ```{r}
+#Done
 #Histogram function
 histogram <- overlapping_histogram_comparing_sexes(clean_gentoo_body_mass_sex, body_mass_g, sex, "Body Mass(g)", "Count")
 
 histogram
 
 
-#Saving histogram as .png
-save_histogram_as_png(histogram,
-            here("figures", "histogram.png"),
+#Saving histogram as .png 
+save_as_png(clean_gentoo_body_mass_sex, 
+            here("figures", "histogram.png"), 
+            histogram,
             size = 20, res = 300, scaling = 2)
+
 
 #Saving histogram as .svg
-save_histogram_as_svg(histogram,
+save_as_svg(clean_gentoo_body_mass_sex,
             here("figures", "histogram.svg"),
-            size = 20, scaling =2)
-
-#Saving scatterplot as .png 
-save_as_png(clvscd_scatterplot, 
-            here("figures", "clvscd_scatterplot_report.png"), 
-            scatterplot,
-            size = 20, res = 300, scaling = 2)
-
-#Saving scatterplot as .svg
-save_as_svg(clvscd_scatterplot,
-            here("figures", "clvscd_scatterplot_report.svg"),
-            scatterplot,
+            histogram,
             size = 20, scaling = 2)
-
 ```
 
 
 Run a statistical test
-
 ```{r}
 #Done
 #Defining linear model
 linear_model <- lm(body_mass_g ~ sex, data = clean_gentoo_body_mass_sex)
 ```
 
+
 ```{r}
+#wrong
 #Diagnostic plots 
 #Displaying diagnostic plots in a multi-panel grid
 par(mfrow = c(2, 2), 
     mar = c(4, 4, 2, 2)) #changing size of margins 
 
 
-#Diagnostic plots
-diagnostic_plot <- plot(linear_model)
-diagnostic_plot
+#Diagnostic plot function
+diagnostic_plot_function()
 
 
-#Saving diagnostic plots .png
-save_diagnostic_plot_as_png(diagnostic_plots,
-            here
-            ("figures", "diagnostic_plot_report.png"),
-            size = 20, res = 300, scaling = 2)
+# Saving the diagnostic plot as a .png
+save_diagnostic_plot_as_png(
+  here("figures", "diagnostic_plot.png"),  
+  diagnostic_plot_function,                    
+  size = 20,                               
+  res = 300,                              
+  scaling = 2                              
+)
 
-
-#Saving diagnostic plots as .svg
-save_diagnostic_plot_as_svg(diagnostic_plots,
-                              here("figures", "diagnostic_plot_report.svg"),
-                              size = 20, res = 300, scaling = 2)
+# Saving the diagnostic plot as a .svg
+save_diagnostic_plot_as_svg(
+  here("figures", "diagnostic_plot.svg"),  
+  diagnostic_plot_function,                    
+  size = 20,                               
+  scaling = 2                              
+)
 ```
 
-```{r}
-#Done
-summary(linear_model)
-```
 
 ```{r}
 #Done
@@ -217,22 +208,24 @@ print(linear_model_summary_table)
 
 
 ```{r}
-#Results figure
+#Done
+#Results figure function
 linear_model_results_figure <-linear_model_figure(clean_gentoo_body_mass_sex, sex, body_mass_g, "Sex", "Body Mass (g)")
 
 linear_model_results_figure
 
-#Saving results figure as .png
-save_results_figure_as_png(linear_model_results_figure,
-            here
-            ("figures", "diagnostic_plot_report.png"),
+#Saving results figure as .png 
+save_as_png(clean_gentoo_body_mass_sex, 
+            here("figures", "results_figure.png"), 
+            linear_model_results_figure,
             size = 20, res = 300, scaling = 2)
 
 
 #Saving results figure as .svg
-save_results_figure_as_svg(linear_model_results_figure,
-                              here("figures", "diagnostic_plot_report.svg"),
-                              size = 20, res = 300, scaling = 2)
+save_as_svg(clean_gentoo_body_mass_sex,
+            here("figures", "results_figure.svg"),
+            linear_model_results_figure,
+            size = 20, scaling = 2)
 ```
 
 

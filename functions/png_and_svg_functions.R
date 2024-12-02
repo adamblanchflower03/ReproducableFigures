@@ -8,7 +8,7 @@
 ## Date Created: 01-12-2024
 ##
 
-#save diagnostic plot as .png
+#save as .png
 
 save_as_png <- function(data, filename, plot, size, res, scaling){
   agg_png(filename, width = size,
@@ -20,7 +20,7 @@ save_as_png <- function(data, filename, plot, size, res, scaling){
   dev.off()
 }
 
-#save diagnostic plot as .svg
+#save as .svg
 
 save_as_svg <- function(data, filename, plot, size, res, scaling){
   size_inches = size/2.54
@@ -30,3 +30,22 @@ save_as_svg <- function(data, filename, plot, size, res, scaling){
   print(plot)
   dev.off()
 }
+
+
+# Function to diagnostic plot as .png
+save_diagnostic_plot_as_png <- function(filename, plot_func, size, res, scaling) {
+  agg_png(filename, width = size, height = size, units = "cm", res = res, scaling = scaling)
+  par(mfrow = c(2, 2), mar = c(4, 4, 2, 2))  # Set layout to 2x2 grid and margins
+  plot_func()  # Call the function to create the plot
+  dev.off()  # Close the graphics device
+}
+
+# Function to save diagnostic plot as .svg
+save_diagnostic_plot_as_svg <- function(filename, plot_func, size, scaling) {
+  size_inches <- size / 2.54  # Convert size from cm to inches
+  svglite(filename, width = size_inches, height = size_inches, scaling = scaling)
+  par(mfrow = c(2, 2), mar = c(4, 4, 2, 2))  # Set layout to 2x2 grid and margins
+  plot_func()  # Call the function to create the plot
+  dev.off()  # Close the graphics device
+}
+

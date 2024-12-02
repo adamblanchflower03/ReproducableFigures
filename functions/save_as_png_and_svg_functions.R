@@ -77,6 +77,6 @@ save_results_figure_as_svg <- function(data, filename, size, res, scaling){
   dev.off()
 }
 
-
+sav
 
 
