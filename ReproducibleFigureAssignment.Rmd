@@ -6,7 +6,7 @@ date: "2024-11-26"
 
 INTRODUCTION
 
-"Sexual dimorphism" means that the two sexes of a species differ in external appearances or other features (Ralls & Mesnich., 2009). This includes differences in size, where one of the sexes are a lot larger than the other. Here, I investigate whether this sexual size dimorphism is apparent in the Gentoo penguin (Pygoscelis papua) using body mass data acquired from the "palmerpenguins" data set. If there was no size difference, we would expect the coefficient from a linear model analysis to be zero.
+"Sexual dimorphism" means that the two sexes of a species differ in external appearances or other features (Ralls & Mesnich., 2009). This includes differences in size, where one of the sexes are a lot larger than the other. Here, I investigate whether this sexual size dimorphism is apparent in the Gentoo penguin (Pygoscelis papua) using body mass data acquired from the "palmerpenguins" data set. If there was no size difference, we would expect the coefficient from a linear model analysis to be zero. If there was a size difference, we would epxect the coefficient from a linear model analysis to be significantly different form zero.
 
 
 STATISTICAL METHODS
@@ -56,6 +56,7 @@ write_csv(penguins_raw, here("data", "penguins_raw.csv"))
 
 
 Cleaning and subsetting the data
+
 ```{r}
 #Clean and subset the data. Filter by Gentoo species and subset species, body mass and sex
 clean_gentoo_body_mass_sex <- penguins_clean %>%
@@ -108,9 +109,7 @@ linear_model <- lm(body_mass_g ~ sex, data = clean_gentoo_body_mass_sex)
 
 Checking for assumptions of linear model analysis 
 
-Before performing a linear model analysis it is important to check that the Gentoo body mass data meets it's assumptions of: 1) independence 2) normality 3) homoscedasticity and 4) no influential outliers. I do not have access to the methods used to collect the body mass data but for the purpose of this analysis I have assumed that each data point is independent of each other.
-
-To do this I have used a mulit-panel grid of diagnostic plots below. The Q-Q residuals plot shows that the data points closely follow the straight line suggesting that the residuals are normally distributed.
+Before performing a linear model analysis it is important to check that the Gentoo body mass data meets it's assumptions of: 1) independence 2) normality 3) homoscedasticity and 4) no influential outliers. I do not have access to the methods used to collect the body mass data but for the purpose of this analysis I have assumed that each data point is independent of each other. To then check for the other assumptions I have used a mulit-panel grid of diagnostic plots below. The Q-Q residuals plot shows that the data points closely follow the straight line suggesting that the residuals are normally distributed. Both the residuals vs fitted and the scale-location plot show a random scatter and a horizontal line indicating homoscedasticity. Finally, the data points in the residual vs leverage plot have a small Cook's distance so the outliers identified in the histogram are not having an influential effect. Since all of the assumptions for the linear model have been met, it is adequate to carry out the analysis.
 
 ```{r}
 #Diagnostic plots 
@@ -143,6 +142,15 @@ save_diagnostic_plot_as_svg(
 
 
 RESULTS
+
+After carrying out a linear model analysis and summarising the results in a table, we can see that the male Gentoo penguins from the palmerpenguin data set are 805.09 grams heavier than the female Gentoo penguins. This difference in body mass is significant since the p < 0.05.
+
+```{r}
+#Linear model analysis 
+summary(linear_model)
+```
+
+
 ```{r}
 #Linear model analysis summary table
 #Firstly, converting model into a clean structure and extracting key details 
@@ -162,7 +170,6 @@ print(linear_model_summary_table)
 
 
 ```{r}
-#Done
 #Results figure function
 linear_model_results_figure <-linear_model_figure(clean_gentoo_body_mass_sex, sex, body_mass_g, "Sex", "Body Mass (g)")
 
