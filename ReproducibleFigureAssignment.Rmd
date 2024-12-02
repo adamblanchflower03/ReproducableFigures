@@ -12,6 +12,7 @@ INTRODUCTION
 STATISTICAL METHODS
 
 Loading libraries
+
 ```{r}
 library(tidyverse)
 library(palmerpenguins)
@@ -24,6 +25,7 @@ library(broom)
 
 
 Loading functions
+
 ```{r}
 #Cleaning function file
 source(here("functions", "cleaning.R"))
@@ -42,7 +44,8 @@ source(here("functions", "diagnostic_plot_function.R"))
 ```
 
 
-Load the data
+Loading the data
+
 ```{r}
 #Loading raw dataset
 penguins_raw
@@ -52,7 +55,7 @@ write_csv(penguins_raw, here("data", "penguins_raw.csv"))
 ```
 
 
-Clean and subset the data
+Cleaning and subsetting the data
 ```{r}
 #Clean and subset the data. Filter by Gentoo species and subset species, body mass and sex
 clean_gentoo_body_mass_sex <- penguins_clean %>%
@@ -69,6 +72,9 @@ write_csv(clean_gentoo_body_mass_sex, here("data", "clean_gentoo_body_mass.csv")
 
 
 Creating an Exploratory Figure - Histogram
+
+I first use a histogram to compare the differences in body mass between the sexes. From the figure below it appears that the modal body mass of males is about 250 grams heavier than females but the range of mass seems to be equal at about 1500 grams. Other than for the two male outliers and one female outlier the body mass data also appears to show little skew and looks normally distributed, which suggets that a linear model analysis would be a suitable statistical test to further compare the differences in body mass.
+
 ```{r}
 #Histogram function
 histogram <- overlapping_histogram_comparing_sexes(clean_gentoo_body_mass_sex, body_mass_g, sex, "Body Mass(g)", "Count")
@@ -92,7 +98,8 @@ save_as_svg(clean_gentoo_body_mass_sex,
 ```
 
 
-Running a statistical test
+Defining the linear model 
+
 ```{r}
 #Defining linear model
 linear_model <- lm(body_mass_g ~ sex, data = clean_gentoo_body_mass_sex)
@@ -100,6 +107,11 @@ linear_model <- lm(body_mass_g ~ sex, data = clean_gentoo_body_mass_sex)
 
 
 Checking for assumptions of linear model analysis 
+
+Before performing a linear model analysis it is important to check that the Gentoo body mass data meets it's assumptions of: 1) independence 2) normality 3) homoscedasticity and 4) no influential outliers. I do not have access to the methods used to collect the body mass data but for the purpose of this analysis I have assumed that each data point is independent of each other.
+
+To do this I have used a mulit-panel grid of diagnostic plots below. The Q-Q residuals plot shows that the data points closely follow the straight line suggesting that the residuals are normally distributed.
+
 ```{r}
 #Diagnostic plots 
 #Displaying diagnostic plots in a multi-panel grid and adjusting margin size 
