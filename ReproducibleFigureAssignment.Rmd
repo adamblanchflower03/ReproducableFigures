@@ -37,18 +37,16 @@ source(here("functions", "diagnostic_plot_function.R"))
 QUESTION 01: Data Visualisation for Science Communication
 Loading dataset
 ```{r}
-#Done
-#Loading raw dataset
+#Loading and visualising raw dataset
 penguins_raw
 
-#Preserving raw datast
+#Saving raw datast
 write_csv(penguins_raw, here("data", "penguins_raw.csv"))
 ```
 
 
 Cleaning dataset
 ```{r}
-#Done
 #Cleaning function to clean the data 
 penguins_clean <- penguins_raw %>%
   clean_column_names() %>%
@@ -56,6 +54,7 @@ penguins_clean <- penguins_raw %>%
   shorten_species() %>%
   remove_empty_columns_rows()
 
+#Visualising clean data set 
 penguins_clean
 
 #Saving cleaned dataset
@@ -65,22 +64,25 @@ write_csv(penguins_clean, here("data", "penguins_clean.csv"))
 
 Making scatterplot (Culmen Length vs Culmen Depth)
 ```{r}
-#Done
 #Subset columns and removing NA values
 species_culmen_length_and_depth <- penguins_clean %>% select(species, culmen_length_mm, culmen_depth_mm) %>%
   drop_na()
 
+#Visualising modified data set 
 species_culmen_length_and_depth
+
+#Saving modified data 
+write_csv(penguins_clean, here("data", "species_culmen_length_and_depth.csv"))
 ```
 
 
 ```{r}
-#Done
 #scatter plot for three species function 
 scatterplot <- three_species_scatterplot(species_culmen_length_and_depth,
                           culmen_length_mm, culmen_depth_mm, species,
                           "Culmen Length (mm)", "Culmen Depth (mm)")
 
+#Visualising scatter plot
 scatterplot
 
 #Saving scatterplot as .png 
@@ -100,22 +102,20 @@ save_as_svg(species_culmen_length_and_depth,
 QUESTION 02: Data Pipeline
 Load the data
 ```{r}
-#Done
 #Loading raw dataset
 penguins_raw
 
-#Preserving raw datast
+#Saving raw dataset
 write_csv(penguins_raw, here("data", "penguins_raw.csv"))
 ```
 
 
 Clean and subset the data
 ```{r}
-#Done
-#Clean and subset the data
+#Clean and subset the data. Filter by Gentoo species and subset species, body mass and sex
 clean_gentoo_body_mass_sex <- penguins_clean %>%
-  filter(species == "Gentoo") %>%  #filter by Gentoo species 
-  select(species, body_mass_g, sex) %>% #subset species, body mass and sex 
+  filter(species == "Gentoo") %>%   
+  select(species, body_mass_g, sex) %>%  
   remove_NA() 
 
 #visualise the data 
@@ -132,6 +132,7 @@ Create an Exploratory Figure
 #Histogram function
 histogram <- overlapping_histogram_comparing_sexes(clean_gentoo_body_mass_sex, body_mass_g, sex, "Body Mass(g)", "Count")
 
+#Visualising histogram 
 histogram
 
 
@@ -152,18 +153,16 @@ save_as_svg(clean_gentoo_body_mass_sex,
 
 Run a statistical test
 ```{r}
-#Done
 #Defining linear model
 linear_model <- lm(body_mass_g ~ sex, data = clean_gentoo_body_mass_sex)
 ```
 
 
 ```{r}
-#wrong
 #Diagnostic plots 
-#Displaying diagnostic plots in a multi-panel grid
+#Displaying diagnostic plots in a multi-panel grid and adjusting margin size 
 par(mfrow = c(2, 2), 
-    mar = c(4, 4, 2, 2)) #changing size of margins 
+    mar = c(4, 4, 2, 2))  
 
 
 #Diagnostic plot function
@@ -190,14 +189,14 @@ save_diagnostic_plot_as_svg(
 
 
 ```{r}
-#Done
 #Linear model analysis summary table
-linear_model_summary <- broom::tidy(linear_model)  #converting model into a clean structure and extracting key details 
+#Firstly, converting model into a clean structure and extracting key details 
+linear_model_summary <- broom::tidy(linear_model)   
 
-#Summary table - estimate, SE, and statistic rounded to three decimal points and p-values to 4 significant figues  
+#Summary table - estimate, SE, and statistic rounded to three decimal points and p-values to 4 significant figures  
 linear_model_summary_table <- linear_model_summary %>%
   select(term, estimate, std.error, statistic, p.value) %>%
-  mutate(    #rounding estimate, SE and statistic to 3 decimal places 
+  mutate(    
     estimate = round(estimate, 3),
     std.error = round(std.error, 3),
     statistic = round(statistic, 3),
