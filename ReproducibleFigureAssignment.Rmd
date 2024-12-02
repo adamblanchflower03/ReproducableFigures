@@ -23,15 +23,6 @@ source(here("functions", "png_and_svg_functions.R"))
 #Loading functions to produce exploratory figures 
 source(here("functions", "exploratory_figure_functions.R"))
 
-#Loading scatterplot for three species function
-source(here("functions", "scatterplot_for_three_species.R"))
-
-#Loading scatterplot for one species function
-source(here("functions", "scatterplot_for_one_species.R"))
-
-#loading histogram function
-source(here("functions", "overlapping_histogram.R"))
-
 #loading linear model figure function
 source(here("functions", "linear_model_figure.R"))
 ```
@@ -90,13 +81,13 @@ scatterplot <- three_species_scatterplot(species_culmen_length_and_depth,
 scatterplot
 
 #Saving scatterplot as .png 
-save_as_png(clvscd_scatterplot, 
+save_as_png(species_culmen_length_and_depth, 
             here("figures", "clvscd_scatterplot_report.png"), 
             scatterplot,
             size = 20, res = 300, scaling = 2)
 
 #Saving scatterplot as .svg
-save_as_svg(clvscd_scatterplot,
+save_as_svg(species_culmen_length_and_depth,
             here("figures", "clvscd_scatterplot_report.svg"),
             scatterplot,
             size = 20, scaling = 2)
@@ -138,7 +129,6 @@ write_csv(clean_gentoo_body_mass_sex, here("data", "clean_gentoo_body_mass.csv")
 Create an Exploratory Figure
 
 ```{r}
-#Done
 #Histogram function
 histogram <- overlapping_histogram_comparing_sexes(clean_gentoo_body_mass_sex, body_mass_g, sex, "Body Mass(g)", "Count")
 
@@ -155,6 +145,18 @@ save_histogram_as_svg(histogram,
             here("figures", "histogram.svg"),
             size = 20, scaling =2)
 
+#Saving scatterplot as .png 
+save_as_png(clvscd_scatterplot, 
+            here("figures", "clvscd_scatterplot_report.png"), 
+            scatterplot,
+            size = 20, res = 300, scaling = 2)
+
+#Saving scatterplot as .svg
+save_as_svg(clvscd_scatterplot,
+            here("figures", "clvscd_scatterplot_report.svg"),
+            scatterplot,
+            size = 20, scaling = 2)
+
 ```
 
 
@@ -167,7 +169,6 @@ linear_model <- lm(body_mass_g ~ sex, data = clean_gentoo_body_mass_sex)
 ```
 
 ```{r}
-#Done
 #Diagnostic plots 
 #Displaying diagnostic plots in a multi-panel grid
 par(mfrow = c(2, 2), 
@@ -216,7 +217,6 @@ print(linear_model_summary_table)
 
 
 ```{r}
-#Done
 #Results figure
 linear_model_results_figure <-linear_model_figure(clean_gentoo_body_mass_sex, sex, body_mass_g, "Sex", "Body Mass (g)")
 

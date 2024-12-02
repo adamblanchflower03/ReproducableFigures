@@ -1,3 +1,12 @@
+## Script name: Save_as_png_and_svg_functions
+##
+## Purpose of script: 
+##      # A file of functions for saving figures as .png and .svg files 
+##
+## Author: Adam Blanchflower
+##
+## Date Created: 01-12-2024
+##
 
 #save diagnostic plot as .png
 
