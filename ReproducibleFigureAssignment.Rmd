@@ -47,10 +47,10 @@ source(here("functions", "diagnostic_plot_function.R"))
 Loading the data
 
 ```{r}
-#Loading raw dataset
+#Loading raw data set
 penguins_raw
 
-#Saving raw dataset
+#Saving raw data set
 write_csv(penguins_raw, here("data", "penguins_raw.csv"))
 ```
 
@@ -143,7 +143,7 @@ save_diagnostic_plot_as_svg(
 
 RESULTS
 
-Given that all the assumptions for the linear model were met, I proceeded with the linear model analysis. The results from the linear model show that male Gentoo penguins are, on average, 805.09 grams heavier than females. This difference is statistically significant (p < 0.05). Additionally, the multiple R-squared value of 0.6494 suggests that sex explains a substantial portion of the variance in body mass, though other factors likely contribute as well..  
+Given that all the assumptions for the linear model were met, I proceeded with the linear model analysis. The results from the linear model show that male Gentoo penguins are, on average, 805.09 grams heavier than females. This difference is statistically significant (p < 0.05). Additionally, the multiple R-squared value of 0.6494 suggests that sex explains a substantial portion of the variance in body mass, though other factors likely contribute as well. 
 
 ```{r}
 #Linear model analysis 
@@ -191,9 +191,26 @@ save_as_svg(clean_gentoo_body_mass_sex,
 
 DISCUSSION
 
+In this study, I examined whether sexual size dimorphism is present in Gentoo penguins by analysing body mass data from the palmerpenguins data set. The results from the linear model analysis that I carried out after verifying it's assumptions indicate a significant difference in body mass between male and female Gentoo penguins. On average, the males were 805.09 grams heavier. Therefore this result supports the hypothesis that sexual dimorphism is present in this species
+
+This size difference is consistent with other studies looking at different penguin species (Poisbleau et al., 2010; Koehn et al., 2016). Furthermore, the large multiple R-squared value (0.6494) suggests that sex is an important factor in determining the body mass in Gentoo penguins. However, it is important to note that other variables, such as food availability, determining body mass have not been accounted for. Hence, future studies could include additional covariates to better explain the variabilitiy in body mass. 
+
+Another potential area for future research could be to explore the potential reasons behind this sexual size dimorphism. For example, the breeding ecology of these penguins could mean that males are better competitors for mating opportunities when they have a larger body mass. As a result, sexual selection over evolutionary time may have selected for males to have a larger body size in this species. Investigating the relationship between body mass and a potential behavioural traits as just described could provide additional insights into the evolutionary pressures that shape size dimorphism in this species.
+
+Finally it is important to note that although the linear model met most of the necessary assumptions there is still the main limitation that I have presumed independence even though the data could have been collected in a way that could introduce biases between individual measurements.
+
 
 CONCLUSION
 
+This study confirms the presence of sexual size dimorphism in the Gentoo penguin species, where males are significantly larger than females by an average of 805.09 grams. The linear model analysis shown that this variation was largely explained by sex with a high multiple R-squared value (0.6494) but it should be noted that other factors not considered in this study will affect body mass. Whilst most of the assumptions for the linear model were met, independence had to be presumed based off the lack of knowledge on the methodology carried out to obtain body mass measurements for the different sexes. This is therefore a key limitation of the study. Future research should incorporate other covariates that would affect body size, such as food availability, as well as looking at the evolutionary drivers of sexual size dimorphism in this species. Overall, this study provides evidence for the presence of sexual size dimorphism in the Gentoo penguin species.
 
+
+REFERENCES
+
+Koehn, L.E., Hard, J.J., Akst, E.P., Boersma, D.P. (2016). Natural selection on morphology varies among years and by sex in Magellanic Penguins (Spheniscus magellanicus), The Auk, 133(4): pp 783-805. https://doi.org/10.1642/AUK-16-50.1 
+
+Poisbleau, M., Demongin, L., van Noordwijk, H.J., Strange, I.J., Quillfeldt, P. (2010). Sexual Dimorphism and use of Morphological Measurements to Sex Adults, Immatures and Chicks of Rockhopper Penguins, Ardea, 98(2): pp 217-224. https://doi.org/10.5253/078.098.0212 
+
+Ralls, K., Mesnick, S. (2009) Sexual Dimorphism, Enclyclopedia of Marine Mammals, pp 1005-1011. http://dx.doi.org/10.1016/B978-0-12-373553-9.00233-9 
 
 QUESTION 3: Open Science
