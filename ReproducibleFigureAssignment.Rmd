@@ -58,7 +58,7 @@ write_csv(penguins_raw, here("data", "penguins_raw.csv"))
 Cleaning raw data set
 ```{r}
 #clean data
-pegnuins_clean <- penguins_raw %>%
+penguins_clean <- penguins_raw %>%
   clean_column_names() %>%
   remove_columns("comments") %>%
   remove_columns("delta") %>%
