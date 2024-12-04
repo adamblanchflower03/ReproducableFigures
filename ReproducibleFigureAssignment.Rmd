@@ -1,6 +1,8 @@
 ---
 title: "Reproducible Figures Assignment"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 date: "2024-11-26"
 ---
 QUESTION 01: Data Visualisation for Science Communication
@@ -330,11 +332,11 @@ QUESTION 3: Open Science
 
 a) GitHub
 
-GitHub link: 
+GitHub link: https://github.com/oxfordstudent02/ReproducableFigures  
 
 b) Share your repo with a partner and try to run their data pipeline 
 
-Partner's GitHub link: 
+Partner's GitHub link: https://github.com/benaiahhoong/ReproducibleAssignment
 
 c) Reflect on your experience running their code
 
