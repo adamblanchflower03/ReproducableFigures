@@ -55,6 +55,12 @@ write_csv(penguins_raw, here("data", "penguins_raw.csv"))
 ```
 
 
+Cleaning raw data set
+```{r}
+
+```
+
+
 Cleaning and subsetting the data
 
 ```{r}
