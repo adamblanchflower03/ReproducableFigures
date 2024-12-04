@@ -1,8 +1,105 @@
 ---
-title: "QUESTION 02: Data Pipeline"
+title: "Reproducible Figures Assignment"
 output: html_document
 date: "2024-11-26"
 ---
+QUESTION 01: Data Visualisation for Science Communication
+
+Loading libraries
+```{r}
+library(tidyverse)
+library(palmerpenguins)
+library(janitor)
+library(here)
+library(ragg)
+library(svglite)
+```
+
+
+Loading functions
+```{r}
+#Cleaning function file
+source(here("functions", "cleaning.R"))
+
+#Functions to produce exploratory figures 
+source(here("functions", "exploratory_figure_functions.R"))
+
+#Function file to save figures as .png and .svg files
+source(here("functions", "png_and_svg_functions.R"))
+```
+
+
+Loading data set 
+```{r}
+#Loading and visualising raw dataset
+penguins_raw
+
+#Saving raw datast
+write_csv(penguins_raw, here("data", "penguins_raw.csv"))
+```
+
+
+Cleaning raw data set
+```{r}
+#clean data
+penguins_clean <- penguins_raw %>%
+  clean_column_names() %>%
+  remove_columns("comments") %>%
+  remove_columns("delta") %>%
+  remove_empty_columns_rows() %>%
+  shorten_species()
+
+#save and load clean data
+write_csv(penguins_clean, here("data", "penguins_clean.csv"))
+
+penguins_clean <- read_csv(here("data", "penguins_clean.csv"), show_col_types = FALSE)
+
+#visualise the cleaned data
+colnames(penguins_clean)
+penguins_clean
+```
+
+
+Making scatterplot (Culmen Length vs Culmen Depth)
+```{r}
+#Subset columns and removing NA values
+species_culmen_length_and_depth <- penguins_clean %>% select(species, culmen_length_mm, culmen_depth_mm) %>%
+  drop_na()
+
+#Visualising modified data set 
+species_culmen_length_and_depth
+
+#Saving modified data 
+write_csv(penguins_clean, here("data", "species_culmen_length_and_depth.csv"))
+```
+
+Making scatter plot of culmen length vs culmen depth for three species 
+```{r}
+#Scatter plot for three species function 
+scatterplot <- three_species_scatterplot(species_culmen_length_and_depth,
+                          culmen_length_mm, culmen_depth_mm, species,
+                          "Culmen Length (mm)", "Culmen Depth (mm)")
+
+#Visualising scatter plot
+scatterplot
+
+#Saving scatterplot as .png 
+save_as_png(species_culmen_length_and_depth, 
+            here("figures", "clvscd_scatterplot_report.png"), 
+            scatterplot,
+            size = 20, res = 300, scaling = 2)
+
+#Saving scatterplot as .svg
+save_as_svg(species_culmen_length_and_depth,
+            here("figures", "clvscd_scatterplot_report.svg"),
+            scatterplot,
+            size = 20, scaling = 2)
+```
+
+In this graph I have plotted Culmen Depth (mm) against Culmen Length (mm) for the three different penguin species. However, this figure badly communicates the data because it is difficult to distinguish the species data points from each other. Increasing the size of the figure would have helped to separate the data points from each other so that they aren’t overlapping as much. Additionally, instead of using the same colour scheme for each data point, it would have been better to have assigned each species with a species specific colour. Ideally the colours picked would have been dissimilar from each other and colour blind friendly too (e.g. blue, orange and violet). Furthermore, the shapes chosen to represent each species are too similar, especially the shapes chosen to represent the Adelie and Gentoo species. To make it easier to distinguish between the data points, it would have been better to have chosen a cross to represent the Gentoo species. This would ensure that all species data points look different to each other. Finally, a trend line for each species with a matching colour scheme would have been useful too. As long as the data points were more transparent than the trend line itself, this would make it easier to see how culmen depth varies with culmen length especially for each species in parts of the figure where there is an overlap of species data points. 
+
+
+QUESTION 2: Data Pipeline
 
 INTRODUCTION
 
