@@ -5,6 +5,7 @@ date: "2024-11-26"
 ---
 QUESTION 01: Data Visualisation for Science Communication
 
+
 Loading libraries
 ```{r}
 library(tidyverse)
@@ -73,6 +74,7 @@ species_culmen_length_and_depth
 write_csv(penguins_clean, here("data", "species_culmen_length_and_depth.csv"))
 ```
 
+
 Making scatter plot of culmen length vs culmen depth for three species 
 ```{r}
 #Scatter plot for three species function 
@@ -109,7 +111,6 @@ INTRODUCTION
 STATISTICAL METHODS
 
 Loading libraries
-
 ```{r}
 library(tidyverse)
 library(palmerpenguins)
@@ -122,7 +123,6 @@ library(broom)
 
 
 Loading functions
-
 ```{r}
 #Cleaning function file
 source(here("functions", "cleaning.R"))
@@ -142,7 +142,6 @@ source(here("functions", "diagnostic_plot_function.R"))
 
 
 Loading the data
-
 ```{r}
 #Loading raw data set
 penguins_raw
@@ -174,7 +173,6 @@ penguins_clean
 
 
 Cleaning and subsetting the data
-
 ```{r}
 #Clean and subset the data. Filter by Gentoo species and subset species, body mass and sex
 clean_gentoo_body_mass_sex <- penguins_clean %>%
@@ -193,7 +191,6 @@ write_csv(clean_gentoo_body_mass_sex, here("data", "clean_gentoo_body_mass.csv")
 Creating an Exploratory Figure - Histogram
 
 I first visualized the differences in body mass between the sexes using a histogram. The histogram suggests that the modal body mass of male Gentoo penguins is approximately 250 grams heavier than females, while the mass range appears similar for both sexes, around 1500 grams. Aside from two male outliers and one female outlier, the body mass data seems to exhibit little skew and appears approximately normally distributed. This suggests that a linear model would be an appropriate statistical test to compare body mass differences between the sexes.
-
 ```{r}
 #Histogram function
 histogram <- overlapping_histogram_comparing_sexes(clean_gentoo_body_mass_sex, body_mass_g, sex, "Body Mass(g)", "Count")
@@ -218,7 +215,6 @@ save_as_svg(clean_gentoo_body_mass_sex,
 
 
 Defining the linear model 
-
 ```{r}
 #Defining linear model
 linear_model <- lm(body_mass_g ~ sex, data = clean_gentoo_body_mass_sex)
@@ -228,7 +224,6 @@ linear_model <- lm(body_mass_g ~ sex, data = clean_gentoo_body_mass_sex)
 Checking for assumptions of linear model analysis 
 
 Before conducting the linear model analysis, it is essential to verify that the data meets the assumptions of: 1) independence, 2) normality, 3) homoscedasticity, and 4) absence of influential outliers. Although I lack information on the data collection methods, I assume that the data points are independent of each other. To check for the remaining assumptions, I examined diagnostic plots displayed in a multi-panel grid. The Q-Q residuals plot indicates that the residuals are normally distributed, as the data points closely follow the straight line. The residuals versus fitted values and scale-location plots show random scatter and a horizontal line, suggesting homoscedasticity. Finally, the residuals versus leverage plot indicates that the outliers identified in the histogram have a small Cook's distance, implying they are not influential.
-
 ```{r}
 #Diagnostic plots 
 #Displaying diagnostic plots in a multi-panel grid and adjusting margin size 
@@ -262,7 +257,6 @@ save_diagnostic_plot_as_svg(
 RESULTS
 
 Given that all the assumptions for the linear model were met, I proceeded with the linear model analysis. The null hypothesis is: if there was no size difference, we would expect the coefficient from a linear model analysis to be zero. The alternative hypothesis is: if there was a size difference, we would expect the coefficient from a linear model analysis to be significantly different form zero. The results from the linear model show that male Gentoo penguins are, on average, 805.09 grams heavier than females. This difference is statistically significant (p < 0.05) so we can reject the null hypothesis. The figure displaying the results of the linear model analysis also clearly show a regression line with an increasing slope, indicating an increase in body mass from female to male sex. Additionally, the multiple R-squared value of 0.6494 suggests that sex explains a substantial portion of the variance in body mass, though other factors likely contribute as well. 
-
 ```{r}
 #Linear model analysis 
 summary(linear_model)
@@ -331,3 +325,28 @@ Poisbleau, M., Demongin, L., van Noordwijk, H.J., Strange, I.J., Quillfeldt, P. 
 
 Ralls, K., Mesnick, S. (2009) Sexual Dimorphism, Enclyclopedia of Marine Mammals, pp 1005-1011. http://dx.doi.org/10.1016/B978-0-12-373553-9.00233-9 
 
+
+QUESTION 3: Open Science
+
+a) GitHub
+
+GitHub link: 
+
+b) Share your repo with a partner and try to run their data pipeline 
+
+Partner's GitHub link: 
+
+c) Reflect on your experience running their code
+
+Elements of my partner’s code that helped me to understand and run their data pipeline include that they broke their coding up into logical chunks and provided a concise explanation for what each section was being used to code for. This was a good way of setting their work out as it provided a clear step by step process that could be followed along with relative ease. In addition to headings at the top of their code, my partner also annotated most lines of their code with brief explanations for as to what that line was coding for. This is practical because it means that if I wanted to change a variable in a figure for example, I would be able to locate the line of code faster than if there were no annotations. When clearing the data, my partner also made use of piping to prevent overwriting. Furthermore, they also used cleaning functions which helped to improve the readability of the code.
+
+My partners code ran well and nothing was needed to be fixed.
+Suggestions I would make for improving their code to make it more understandable or reproducible include changing the code in the statistics section, where my partner could have directly filtered the adelie_data inside the pipe chain instead of creating a separate variable in order to improve the efficiency of his code. Additionally, my partner could have made use of more functions in their project to make their project more scalable, say if they were working in a larger team. For example, if they had made a function for producing a scatterplot it would have made it easier for somebody else to produce a similar scatterplot but looking at the relationship between different variables. On top of that, including functions would improve the readability of the code because it allows you to abstract complex tasks into a simple function call. 
+
+The code used by my partner to produce the figures in their assignment are clearly separated form other chunks of code which makes it easy to identify which lines of code I would be working with. For most lines of code there is adequate commenting that tells me which part of the code contributes to which feature of the figure. Therefore if I was unhappy with a particular aspect of a figure I would be able to quickly find the line of code that I would need to alter. Although custom functions are useful in general it can be slightly hard to get to use with at first. However, looking at their function file it is clear that my partner has annotated each function well so it would not be to hard and overtime using the function itself would save more time than having to learn how to use it. Overall, I think that if I needed to alter my partners figure using their code it would be quite easy.
+
+d) Reflect on your own code based on your experience with your partner's code and their review of yours
+
+My partner thought that because I only used some of my functions once it would be better to include the source code for the function in the main code instead as it would better explain the input used to generate the figures. I disagree with this improvement because it is but a minor inconvenience to check the functions file and I think that the improved readability of the code as a result of using a function outweighs the potential downsides. Another improvement suggested by my partner related to how it might not seem apparent to how changes in the element of the function may correspond to changes in the output. I do agree with this comment because I could have commented in my code whether the x axes or the y axes came first and similar could be said for the x axes and y axes labels. Whilst this problem still could have been solved quickly by looking at the function file, it would be slightly more efficient to improve my comments in the main code.
+
+I learned that in order to write code for other people organisation is important. For example, it is important to simply organise your files in a logical manner to make it easy to open and store items. It is also important to use a clear, modular structure and annotate my lines of code so that people can understand the step by step process going on in addition to making any changes they might seem necessary for their analysis. Learning how to use piping and creating functions helped me to develop techniques to improve the readability of my code. Furthermore, learning how to write functions helped me to build the skills needed to make my coding more reusable for other people because it helps to avoid rewriting code for similar figures. Using print statements in the function can make it extra clear to what the function is carrying out. Before this assignment I also didn’t realise that by using renv, we are able to keep a record of all the libraries we have installed in our code so that others are able to quickly access them once again making our code more reusable.
