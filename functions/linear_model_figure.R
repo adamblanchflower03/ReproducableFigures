@@ -3,7 +3,7 @@
 ## Purpose of script: 
 ##      # A function for producing linear model figures  
 ##
-## Author: Adam Blanchflower
+## Author: ...
 ##
 ## Date Created: 02-12-2024
 ##

@@ -3,7 +3,7 @@
 ## Purpose of script: 
 ##      # A file of functions for saving figures as .png and .svg files 
 ##
-## Author: Adam Blanchflower
+## Author: ...
 ##
 ## Date Created: 01-12-2024
 ##

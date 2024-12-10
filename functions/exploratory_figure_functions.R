@@ -3,7 +3,7 @@
 ## Purpose of script: 
 ##      # A file of functions for producing different exploratory figures 
 ##
-## Author: Adam Blanchflower
+## Author: ...
 ##
 ## Date Created: 01-12-2024
 ##

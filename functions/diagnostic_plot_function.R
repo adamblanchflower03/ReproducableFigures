@@ -3,7 +3,7 @@
 ## Purpose of script: 
 ##      # A function for produciung diagnostic plots 
 ##
-## Author: Adam Blanchflower
+## Author: ...
 ##
 ## Date Created: 02-12-2024
 ##
